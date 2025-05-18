@@ -17,21 +17,21 @@ class LoginActivity : AppCompatActivity() {
             val intent= Intent(this,AgreeActivity::class.java)
             startActivity(intent)
         }
-//        binding.editTextPw.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                if(binding.editTextPw.text.toString().length>8)
-//                    binding.login.isEnabled=true
-//                else
-//                    binding.login.isEnabled=false
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//
-//            }
-//        })
+        binding.editTextPw.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(binding.editTextPw.text.toString().length>8)
+                    binding.login.isEnabled=true
+                else
+                    binding.login.isEnabled=false
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
     }
 }
