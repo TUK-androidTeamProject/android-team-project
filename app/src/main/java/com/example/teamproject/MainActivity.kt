@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.kakaoIcon.bringToFront()
         binding.loginBtn.setOnClickListener {
-            val intent= Intent(this,AgreeActivity::class.java)
+            val intent= Intent(this,LoginActivity::class.java)
             startActivity(intent)
         }
     }
