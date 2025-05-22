@@ -13,7 +13,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
-        binding.loginBtn.setOnClickListener {
+        binding.login.setOnClickListener {
             val intent= Intent(this,AgreeActivity::class.java)
             startActivity(intent)
         }
