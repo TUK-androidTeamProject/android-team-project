@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(binding.editTextPw.text.toString().length>8)
+                if(binding.editTextPw.text.toString().length >= 8)
                     binding.login.isEnabled=true
                 else
                     binding.login.isEnabled=false

@@ -5,77 +5,70 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.teamproject.databinding.ActivityHomeBinding
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var calendarView: CalendarView
-    private lateinit var textDayInfo: TextView
-    private lateinit var btnWriteDiary: Button
     private lateinit var binding: ActivityHomeBinding
-
     private var selectedDate: String = ""
-    private val diaryMap = mutableMapOf<String, String>() // 날짜별 일기 저장
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        calendarView = binding.calendarView
-        textDayInfo = binding.textDayInfo
-        btnWriteDiary = binding.btnWriteDiary
-
-        selectedDate = getDateFromMillis(calendarView.date)
+        selectedDate = getDateFromMillis(binding.calendarView.date)
         updateDayInfo(selectedDate)
 
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+        binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             selectedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
             updateDayInfo(selectedDate)
         }
 
-        btnWriteDiary.setOnClickListener {
-            if (diaryMap.containsKey(selectedDate)) {
-                // ▶ 일기 보기
-                val intent = Intent(this, DiaryViewActivity::class.java)
-                intent.putExtra("selectedDate", selectedDate)
-                intent.putExtra("diaryText", diaryMap[selectedDate])
-                Log.d("test123","${diaryMap[selectedDate]}")
-                startActivity(intent)
-            } else {
-                // ▶ 일기 쓰기
-                val intent = Intent(this, DiaryActivity::class.java)
-                intent.putExtra("selectedDate", selectedDate)
-                startActivityForResult(intent, 100)
+        binding.btnWriteDiary.setOnClickListener {
+            lifecycleScope.launch {
+                val diaryDao = DiaryDatabase.getDatabase(applicationContext).diaryDao()
+                val diary = diaryDao.getDiaryByDate(selectedDate)
+
+                Log.d("DiaryCheck", "버튼 클릭 시 조회 날짜: $selectedDate, diary: $diary")
+
+                if (diary != null) {
+                    val intent = Intent(this@HomeActivity, DiaryViewActivity::class.java)
+                    intent.putExtra("selectedDate", selectedDate)
+                    intent.putExtra("diaryText", diary.content)
+                    intent.putExtra("emotionName", diary.emotionName)       // ✅ 감정 이름 추가
+                    intent.putExtra("iconResId", diary.iconResId)
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(this@HomeActivity, EmotionSelectionActivity::class.java)
+                    intent.putExtra("selectedDate", selectedDate)
+                    startActivity(intent)
+                }
             }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == RESULT_OK && data != null) {
-            val date = data.getStringExtra("selectedDate") ?: return
-            val diary = data.getStringExtra("diaryText") ?: return
-
-            diaryMap[date] = diary
-            Toast.makeText(this, "$date 일기 저장됨", Toast.LENGTH_SHORT).show()
-            updateDayInfo(date)
         }
     }
 
     private fun updateDayInfo(date: String) {
         val dayOfWeek = getDayOfWeek(date)
-        val info = if (diaryMap.containsKey(date)) {
-            "$date $dayOfWeek\n작성된 일기가 있어요!"
-        } else {
-            "$date $dayOfWeek\n작성된 일기가 없어요"
+
+        lifecycleScope.launch {
+            val diaryDao = DiaryDatabase.getDatabase(applicationContext).diaryDao()
+            val diary = diaryDao.getDiaryByDate(date)
+
+            Log.d("DiaryCheck", "updateDayInfo 조회 날짜: $date, diary: $diary")
+
+            val info = if (diary != null) {
+                "$date $dayOfWeek\n작성된 일기가 있어요!"
+            } else {
+                "$date $dayOfWeek\n작성된 일기가 없어요"
+            }
+
+            binding.textDayInfo.text = info
+            binding.btnWriteDiary.text = if (diary != null) "일기 보기" else "일기 쓰기"
         }
-        textDayInfo.text = info
-        btnWriteDiary.text = if (diaryMap.containsKey(date)) "일기 보기" else "일기 쓰기"
     }
 
     private fun getDateFromMillis(millis: Long): String {

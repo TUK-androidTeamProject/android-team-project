@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <!-- 뒤로 가기 -->
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="뒤로가기"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <!-- 닫기 버튼 -->
+    <ImageView
+        android:id="@+id/btnClose"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_close"
+        android:contentDescription="닫기"
+        android:layout_marginTop="45dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 감정 아이콘 -->
+    <ImageView
+        android:id="@+id/ivEmotion"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_happysticker"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"/>
+
+    <!-- 날짜 -->
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5월 22일"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/ivEmotion"
+        app:layout_constraintTop_toTopOf="@+id/ivEmotion"
+        android:layout_marginStart="12dp"/>
+
+    <!-- 감정명 -->
+    <TextView
+        android:id="@+id/tvEmotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="두려운 목요일"
+        android:textSize="14sp"
+        android:textColor="#888888"
+        app:layout_constraintStart_toStartOf="@+id/tvDate"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate"/>
+
+    <!-- 일기 입력창 -->
+    <EditText
+        android:id="@+id/etDiaryContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="오늘 어떤 일이 있었나요?"
+        android:background="@android:color/transparent"
+        android:textSize="16sp"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:paddingTop="20dp"
+        android:imeOptions="flagNoExtractUi"
+        android:maxLines="10"
+        app:layout_constraintTop_toBottomOf="@+id/ivEmotion"
+        app:layout_constraintBottom_toTopOf="@+id/btnSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <!-- 저장 버튼 -->
+    <TextView
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="저장"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="24dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

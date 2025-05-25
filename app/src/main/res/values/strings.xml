@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">teamProject</string>
+    <string name="emotion_icon">감정 아이콘</string>
 </resources>

@@ -13,6 +13,12 @@
         android:theme="@style/Theme.TeamProject"
         tools:targetApi="31">
         <activity
+            android:name=".EmotionSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DiaryEntryActivity"
+            android:exported="false" />
+        <activity
             android:name=".SetNameActivity"
             android:exported="false" />
         <activity
